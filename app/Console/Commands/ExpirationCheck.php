@@ -44,7 +44,7 @@ class ExpirationCheck extends Command
        foreach ($products as $product){
            if($product->endDate <= now())
                $product->delete();
-       }
+       }//hello
         return $this->returnData('success','success');
     }
 }
