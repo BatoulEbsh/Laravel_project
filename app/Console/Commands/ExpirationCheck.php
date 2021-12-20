@@ -41,10 +41,10 @@ class ExpirationCheck extends Command
     public function handle()
     {
         $products = Product::all();
-       foreach ($products as $product){
-           if($product->endDate <= now())
-               $product->delete();
-       }//hello
+        foreach ($products as $product){
+            if($product->endDate <= now())
+                $product->delete();
+        }//hello
         return $this->returnData('success','success');
     }
 }
