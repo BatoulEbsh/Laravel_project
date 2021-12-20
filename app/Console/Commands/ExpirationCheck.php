@@ -10,7 +10,7 @@ class ExpirationCheck extends Command
 {
     use GeneralTrait;
     /**
-     * The name and signature of the console command.
+     * The name and signature of thjjje console command.
      *
      * @var string
      */
