@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static create(array $product)
  * @method static find(int $id)
  * @method static selecte(string $string, string $string1)
+ * @method static findorfail($id)
+ * @method static withCount(string $string)
+ * @method static where(string $string, $name)
+ * @method static date_create($get)
  */
 class Product extends Model
 {
@@ -31,7 +35,8 @@ class Product extends Model
         'dis2',
         'dis3',
         'days',
-        'user_id'
+        'user_id',
+        'reads'
     ];
     protected $hidden = [
         'r1',
@@ -45,5 +50,13 @@ class Product extends Model
     public function user(){
         return $this->belongsTo(User::class,'user_id');
     }
-
+    public function views(){
+        return $this->hasMany(View::class,'product_id');
+    }
+    public function comments(){
+        return $this->hasMany(Comment::class,'product_id');
+    }
+    public function likes(){
+        return $this->hasMany(Like::class,'product_id');
+    }
 }

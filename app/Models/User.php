@@ -59,4 +59,10 @@ class User extends Authenticatable implements JWTSubject
     public function products(){
         return $this->hasMany(Product::class,'user_id');
     }
+    public function views(){
+        return $this->hasMany(View::class,'user_id');
+    }
+    public function comments(){
+        return $this->hasMany(Comment::class,'user_id');
+    }
 }

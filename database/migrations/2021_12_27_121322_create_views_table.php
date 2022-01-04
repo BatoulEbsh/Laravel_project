@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLinkedTable extends Migration
+class CreateViewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateLinkedTable extends Migration
      */
     public function up()
     {
-        Schema::create('linked', function (Blueprint $table) {
+        Schema::create('views', function (Blueprint $table) {
             $table->id();
-            $table->string('nameOfProduct');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateLinkedTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('linked');
+        Schema::dropIfExists('views');
     }
 }

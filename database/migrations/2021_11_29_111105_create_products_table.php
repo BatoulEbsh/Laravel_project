@@ -19,18 +19,18 @@ class CreateProductsTable extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->text('image');
             $table->date('endDate');
-            $table->string('cat_Id');//TODO
-            $table->longText('contact');
-            $table->integer('quantity')->default(1);
+            $table->string('category');//TODO
+            $table->string('contact');
+            $table->double('quantity')->default(1);
             $table->double('price');
             $table->integer('days');
             $table->integer('r1');
             $table->integer('r2');
             $table->integer('r3');
             $table->double('main_price');
-            $table->integer('dis1');
-            $table->integer('dis2');
-            $table->integer('dis3');
+            $table->double('dis1');
+            $table->double('dis2');
+            $table->double('dis3');
             $table->timestamps();
         });
     }
