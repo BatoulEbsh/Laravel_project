@@ -46,7 +46,7 @@ class ExpirationCheck extends Command
         foreach ($products as $product){
             $product['days']-=1;
             if ($product['days']<=0){
-                unlink(substr($product['image'], strlen(URL::to('/')) + 1));
+               //TODO
                 $product->delete();
             }else{
                 $product['price'] = $this->price(

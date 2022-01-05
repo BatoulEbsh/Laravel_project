@@ -53,7 +53,7 @@ class ProductController extends Controller
             'contact' => 'required|string',
             'category' => 'required|string',
             'quantity' => 'required|integer',
-            'price' => 'required',//TODO double
+            'price' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             'r1' => 'required|integer',//range1
             'r2' => 'required|integer',//range2
             'r3' => 'required|integer',
@@ -65,7 +65,7 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return $this->returnError(401, $validator->errors());
         }
-        $nameImage = time() . $this->returnCode(5) . $product['image']->getClientOriginalName();
+        $nameImage = time() .$product['image']->getClientOriginalName();
         $product['image']->move("images", $nameImage);
         $product['image'] = URL::to('/images') . "/" . $nameImage;
         $product['endDate'] = date_create(date('Y/m/d', strtotime($product['endDate'])));
@@ -82,7 +82,7 @@ class ProductController extends Controller
             $product['main_price']);
         $product['user_id'] = Auth::id();
         $product = Product::create($product);
-        return $this->returnData("Product", $product);
+        return $this->returnSuccessMessage('product added successfully');
     }
 
     public function searchName(Request $request)

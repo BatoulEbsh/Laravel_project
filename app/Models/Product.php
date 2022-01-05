@@ -24,7 +24,7 @@ class Product extends Model
         'endDate',
         'classification',
         'contact',
-        'cat_Id',
+        'category',
         'quantity',
         'price',
         'r1',

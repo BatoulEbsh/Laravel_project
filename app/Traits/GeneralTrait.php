@@ -17,11 +17,11 @@ trait GeneralTrait
 
     public function returnSuccessMessage($msg = "", $errNum = "S000")
     {
-        return [
+        return response()->json([
             'status' => true,
             'errNum' => $errNum,
             'msg' => $msg
-        ];
+        ]);
     }
 
     public function returnData($key, $value, $msg = "")
@@ -32,15 +32,6 @@ trait GeneralTrait
             'msg' => $msg,
             $key => $value
         ]);
-    }
-    function returnCode($length = 6) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
     }
     public function price($r1,$r2,$r3,$dis1,$dis2,$dis3,$days,$mainPrice){
         if ($days>$r1){
