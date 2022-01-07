@@ -134,7 +134,7 @@ class ProductController extends Controller
 
          return Product::withCount('views')->withCount('likes')->get();
      }
-    return Product::withCount('views')->withCount('likes')->orderby($sort)->get();
+    return Product::withCount('views')->withCount('likes')->orderby($sort);
 }
 
     /**
