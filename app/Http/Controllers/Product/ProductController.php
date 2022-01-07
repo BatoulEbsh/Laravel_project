@@ -132,9 +132,9 @@ class ProductController extends Controller
      $sort = $request->header('sort');
      if(is_null($sort)){
 
-         return Product::withCount('views')->whithCount('likes');
+         return Product::withCount('views')->withCount('likes')->get();
      }
-    return Product::withCount('views')->whithCount('likes')->orderby($sort);
+    return Product::withCount('views')->withCount('likes')->orderby($sort)->get();
 }
 
     /**
@@ -187,12 +187,12 @@ class ProductController extends Controller
         $product['quantity'] = $input['quantity'];
         if ($request->has('image')) {
             unlink(substr($product['image'], strlen(URL::to('/')) + 1));
-            $new = time() . $this->returnCode(5) . $input['image']->getClientOriginalName();
+            $new = time() . $input['image']->getClientOriginalName();
             $input['image']->move("images", $new);
             $product['image'] = URL::to('/images') . "/" . $new;
         }
         $product->save();
-        return $this->returnData("Product", $input);
+        return $this->returnSuccessMessage('product updated successfully');
     }
 
     /**
