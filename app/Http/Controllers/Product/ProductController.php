@@ -25,12 +25,12 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-            $product = $this->sort($request);
-            for ($i = 0; $i < count($product); $i++) {
-                $product[$i]['isLike'] = LikeController::isLiked($product[$i]['id']);
-            }
-            return $this->returnData('products',$product);
+        $product = $this->sort($request);
+        for ($i = 0; $i < count($product); $i++) {
+            $product[$i]['isLike'] = LikeController::isLiked($product[$i]['id']);
         }
+        return $this->returnData('products',$product);
+    }
     public function dateDiff($date1, $date2)
     {
         $date = date_diff($date1, $date2);
@@ -52,14 +52,14 @@ class ProductController extends Controller
             'endDate' => 'required|date',
             'contact' => 'required|string',
             'category' => 'required|string',
-            'quantity' => 'required|integer',
+            'quantity' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             'price' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             'r1' => 'required|integer',//range1
             'r2' => 'required|integer',//range2
             'r3' => 'required|integer',
-            'dis1' => 'required|integer', //sale1
-            'dis2' => 'required|integer',//sale2
-            'dis3' => 'required|integer'//sale3
+            'dis1' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/', //sale1
+            'dis2' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',//sale2
+            'dis3' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/'//sale3
         ]);
 
         if ($validator->fails()) {
@@ -95,7 +95,7 @@ class ProductController extends Controller
             return $this->returnError(401, $val->errors());
         }
         $searchName = Product::
-            where('name', 'like', '%' . $request['name'] . '%')->withCount('likes')
+        where('name', 'like', '%' . $request['name'] . '%')->withCount('likes')
             ->withCount('views')
             ->get();
         for ($i = 0; $i < count($searchName); $i++) {
@@ -113,9 +113,15 @@ class ProductController extends Controller
             return $this->returnError(401, $val->errors());
         }
         $request['endDate'] = date_create(date('Y/m/d', strtotime($request['endDate'])));
-       $searchDate=Product:: where('endDate', $request['endDate'])->get();
+        $searchDate=Product:: where('endDate', $request['endDate'])->withCount('likes')
+            ->withCount('views')
+            ->get();
+        for ($i = 0; $i < count($searchDate); $i++) {
+            $searchDate[$i]['isLike'] = LikeController::isLiked($searchDate[$i]['id']);
+        }
         return $searchDate;
     }
+
     public function searchCat(Request $request)
     {
         $searchC = $request->all();
@@ -125,17 +131,22 @@ class ProductController extends Controller
         if ($val->fails()) {
             return $this->returnError(401, $val->errors());
         }
-        $searchCat=Product:: where('category', $request['category'])->get();
+        $searchCat=Product:: where('category', $request['category'])->withCount('likes')
+            ->withCount('views')
+            ->get();
+        for ($i = 0; $i < count($searchCat); $i++) {
+            $searchCat[$i]['isLike'] = LikeController::isLiked($searchCat[$i]['id']);
+        }
         return $searchCat;
     }
     public function sort(Request $request){
-     $sort = $request->header('sort');
-     if(is_null($sort)){
+        $sort = $request->header('sort');
+        if(is_null($sort)){
 
-         return Product::withCount('views')->withCount('likes')->get();
-     }
-    return Product::withCount('views')->withCount('likes')->orderby($sort);
-}
+            return Product::withCount('views')->withCount('likes')->get();
+        }
+        return Product::withCount('views')->withCount('likes')->orderby($sort)->get();
+    }
 
     /**
      * Display the specified resource.
